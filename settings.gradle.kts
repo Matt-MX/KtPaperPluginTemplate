@@ -20,3 +20,5 @@ gradleEnterprise {
         }
     }
 }
+
+//rootProject.name = "Template"

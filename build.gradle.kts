@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.archivesName
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -10,21 +11,22 @@ plugins {
     `maven-publish`
 }
 
-group = project.properties["group"].toString()
+val group_name: String by project
+group = group_name
 version = project.properties["version"].toString()
 val id: String by project
 
 val plugin_name: String by project
 val plugin_main_class_name: String by project
 val plugin_author: String by project
-val include_commit_hash: Boolean by project
+val include_commit_hash: String by project
 
 val ktgui_version: String by project
 val paper_version: String by project
 
 repositories {
     mavenCentral()
-    maven("https://maven.pvphub.me")
+    maven("https://maven.pvphub.me/releases")
 }
 
 dependencies {
@@ -36,12 +38,16 @@ dependencies {
 }
 
 tasks {
+    base {
+        archivesName = id
+    }
+
     withType<ProcessResources> {
         val props = mapOf(
             "name" to plugin_name,
-            "main" to "${group}.${id}.${plugin_main_class_name}",
+            "main" to "${group_name}.${id}.${plugin_main_class_name}",
             "author" to plugin_author,
-            "version" to if (include_commit_hash) "${rootProject.version}-commit-${grgit.head().abbreviatedId}" else rootProject.version.toString()
+            "version" to if (include_commit_hash.toBoolean()) "${rootProject.version}-commit-${grgit.head().abbreviatedId}" else rootProject.version.toString()
         )
         inputs.properties(props)
         filteringCharset = "UTF-8"
@@ -74,10 +80,6 @@ java {
 
 sourceSets["main"].resources.srcDir("src/resources/")
 
-kotlin {
-    jvmToolchain(17)
-}
-
 publishing {
     repositories {
         maven {
@@ -92,7 +94,7 @@ publishing {
     publications {
         create<MavenPublication>(id) {
             from(components["java"])
-            groupId = group
+            groupId = group.toString()
             artifactId = id
             version = rootProject.version.toString()
         }
