@@ -80,10 +80,14 @@ tasks {
 java {
     withJavadocJar()
     withSourcesJar()
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 sourceSets["main"].resources.srcDir("src/resources/")
