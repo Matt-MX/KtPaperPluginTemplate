@@ -33,10 +33,6 @@ dependencies {
 }
 
 tasks {
-    base {
-        archivesName = id
-    }
-
     withType<ProcessResources> {
         val props = mapOf(
             "name" to pluginName,
