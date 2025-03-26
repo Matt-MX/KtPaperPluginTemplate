@@ -3,7 +3,7 @@ import java.io.InputStreamReader
 
 plugins {
     alias(libs.plugins.runPaper)
-    alias(libs.plugins.paperweight) apply true
+    // alias(libs.plugins.paperweight) apply true
     alias(libs.plugins.kotlinJvm) apply true
     alias(libs.plugins.shadow) apply true
 
@@ -26,7 +26,8 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle(libs.versions.paperApi.get())
+    // paperweight.paperDevBundle(libs.versions.paperApi.get())
+    compileOnly(libs.paper.api)
 
     compileOnly(libs.ktgui)
     compileOnly(libs.placeholder.api)
